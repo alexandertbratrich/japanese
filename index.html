@@ -9,8 +9,12 @@
   <link rel="stylesheet" type="text/css" href="main.css">
 </head>
 <body>
+<noscript><div id="noscript">
+  <p>Sorry, This whole thing doesn't work without Javascript.</p>
+  <p>Made by the <a href="https://alexandertbratrich.github.io/" target="_blank">Blue Cube Society</a></p>
+</div></noscript>
 <div id="app">
-  <div id="main">
+  <div id="main" :class="{'visible': true}">
     <div :class="['title', 'card', {'hidden': state !== 'wait'}]" :style="[{top: '64px'}, {zIndex: hiragana.length + 3}]">
       <p><b>Hiragana<br>Learn<br>Software</b></p>
 

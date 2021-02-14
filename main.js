@@ -26,7 +26,7 @@ let app = new Vue({
     highscore: 0,
     hiragana: [
       // ∅
-      { gana: 'あ', roman: 'a', cor: 0 },
+      { gana: 'あ', roman: 'a', cor: -1 },
       { gana: 'い', roman: 'i', cor: -1 },
       { gana: 'う', roman: 'u', cor: -1 },
       { gana: 'え', roman: 'e', cor: -1 },
