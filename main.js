@@ -9,7 +9,7 @@
 let app = new Vue({
   el: '#app',
   data: {
-    version: '0.1.214',     // '0.1.0129',
+    version: '0.1.214b',     // '0.1.0129',
     answer: '',             // the input thingy
     fullorder: [],          // the full list of gana in the current run
     order: [],              // the list of gana that are left to do
