@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Hiragana Learn Software</title>
+
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@100;300;400;500;700;800&display=swap" rel="stylesheet"> 
+  <link rel="stylesheet" type="text/css" href="main.css">
+</head>
+<body>
+<div id="app">
+  <div id="main">
+    <div :class="['title', 'card', {'hidden': state !== 'wait'}]" :style="[{top: '64px'}, {zIndex: hiragana.length + 3}]">
+      <p><b>Hiragana<br>Learn<br>Software</b></p>
+
+      <div v-if="eligibleNewCard" :class="['button', {'hidden': state !== 'wait'}]" @click="introduceNewCard()">
+        <span v-if="fullorder.length > 1">Continue</span>
+        <span v-else>Start (new)</span>
+      </div>
+      <div v-else :class="['button', {'hidden': state !== 'wait'}]" @click="start(false)">
+        <span>Start</span>
+      </div>
+    </div>
+
+    <div :class="['new', 'card', {'hidden': (!eligibleNewCard && newCard == -1) || state == 'done'}]" :style="[{top: '64px'}, {zIndex: hiragana.length + 2}]">
+      <span class="banner">NEW</span>
+      <p v-if="newCard !== -1">{{hiragana[newCard].gana}}</p>
+      <span v-if="newCard !== -1" class="solution">{{hiragana[newCard].roman}}</span>
+
+      <div class="button" @click="start(true)">
+        <span>Start</span>
+      </div>
+    </div>
+
+    <div v-for="(c, index) in fullorder" :class="['card', {'reserve': reserve.includes(c)}]" :style="getCardStyle(c, index, order.indexOf(c))">
+      <p>{{hiragana[c].gana}}</p>
+      <span :class="['solution', {'hidden': order.includes(c)}]">{{hiragana[c].roman}}</span>
+    </div>
+
+    <div v-if="reserve.length == 0 && order.length == 0" :class="['end', 'card', {'hidden': state !== 'done'}]">
+      <div class="segment">
+        <p><b>Well Done!</b></p>
+        <p><span>Base Score</span> {{fullorder.length * 100}}</p>
+        <p><span>Streak Bonus</span> {{inarow}} &times; 100</p>
+        <p v-if="errors > 0"><span>Errors</span> &minus; {{errors}} &times; 100</p>
+        <p v-else><span>Errors</span> —</p>
+        <p v-if="timebonus > 0"><span>Time Bonus</span> {{(timebonus*100).toFixed(0)}} %</p>
+        <p v-else><span>Time Bonus</span> —</p>
+        <p><small>{{(time/1000/fullorder.length).toFixed(2)}} sec/gana</small></p>
+        <hr/>
+        <p><span>Score</span> {{score}}</p>
+        <p v-if="highscore == score"><small>New Highscore!</small></p>
+        <p v-else><small>Highscore: {{highscore}}</small></p>
+      </div>
+
+      <!--<small>How does the scoring work?<br/>Score = Ganas in a row &minus; Errors &times; Penalty<br/>
+      Penalty = 1 / (avg. Time &minus; 1)</small>-->
+
+      <div v-if="eligibleNewCard" :class="['button', {'hidden': state !== 'wait'}]" @click="introduceNewCard()">
+        <span>Continue</span>
+      </div>
+      <div v-else :class="['button', {'hidden': state !== 'wait'}]" @click="start(false)">
+        <span>Continue</span>
+      </div>
+    </div>
+
+    <input id="input" :style="getInputStyle()" type="text" v-model="answer" @keyup.enter="submit()" autofocus></input>
+  </div>
+
+  <div id="footer">
+    <p>{{version}} (<span class="pseudolink" @click="deleteAllProgress()">Delete All Progress</span>)</p>
+    <p>Made by the <a href="https://alexandertbratrich.github.io/" target="_blank">Blue Cube Society</a></p>
+  </div>
+</div>
+
+<script src="vue.js"></script>
+<script src="main.js"></script>
+</body>
+</html>
