@@ -1,23 +1,8 @@
 :root {
-  --shmDrkBG: #111; /* background */
-  --shmDrkSC: #333; /* secondary */
+  --shmDrkBG: #333; /* background */
   --shmDrkFT: #EEE; /* font */
-  --shmDrkTW: #AAA; /* white tiles */
-  --shmDrkTB: #666; /* black tiles */
-  --shmDrkPW: #CCC; /* white pieces */
-  --shmDrkPB: #999; /* black pieces */
-
   --primary: indigo;
   --secondary: #c9b2d9; /* very light indigo */
-
-  /*
-  other possible schemes:
-  Lgh (light; white/green)
-  Wod (wooden; brown)
-  Mtl (metal; gold/silver)
-  Mrx (matrix; green)
-  Rvb (red vs blu)
-  */
 }
 
 * {
@@ -96,7 +81,7 @@ p, span, small {
 .card {
   position: absolute;
 
-  height: calc(2 * 192px - 16px);
+  height: calc(384px - 16px);
   width: calc(256px - 16px);
   padding: 8px;
 
@@ -132,7 +117,7 @@ input {
   width: 240px;
   padding: 8px;
   user-select: text;
-  top: calc(384px + 32px);
+  top: calc(50% + 152px);
 
   transition: all 0.3s ease 0s;
 
@@ -273,7 +258,7 @@ input:focus {
 /* ######################################################### END CARD */
 
 .end.card {
-  top: 72px;
+  top: calc(50% - 192px);
   background-color: var(--secondary);
   justify-content: space-between;
 }

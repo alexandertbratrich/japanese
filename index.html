@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta charset="utf-8">
   <title>Hiragana Learn Software</title>
 
@@ -15,11 +16,11 @@
 </div></noscript>
 <div id="app" :class="{'visible': true}">
   <div id="main">
-    <div :class="['title', 'card', {'hidden': state !== 'wait'}]" :style="[{top: '64px'}, {zIndex: hiragana.length + 3}]">
+    <div :class="['title', 'card', {'hidden': state !== 'wait'}]" :style="[{top: '50% - 192px'}, {zIndex: hiragana.length + 3}]">
       <p><b>Hiragana<br>Learn<br>Software</b></p>
 
-      <div v-if="eligibleNewCard" :class="['button', {'hidden': state !== 'wait'}]" @click="introduceNewCard()">
-        <span v-if="fullorder.length > 1">Continue</span>
+      <div v-if="eligibleNewCard==true" :class="['button', {'hidden': state !== 'wait'}]" @click="introduceNewCard()">
+        <span v-if="fullorder.length >= 1">Continue</span>
         <span v-else>Start (new)</span>
       </div>
       <div v-else :class="['button', {'hidden': state !== 'wait'}]" @click="start(false)">
@@ -27,7 +28,7 @@
       </div>
     </div>
 
-    <div :class="['new', 'card', {'hidden': (!eligibleNewCard && newCard == -1) || state == 'done'}]" :style="[{top: '64px'}, {zIndex: hiragana.length + 2}]">
+    <div :class="['new', 'card', {'hidden': (eligibleNewCard!=true && newCard == -1) || state == 'done'}]" :style="[{top: 'calc(50% - 192px)'}, {zIndex: hiragana.length + 2}]">
       <span class="banner">NEW</span>
       <p v-if="newCard !== -1">{{hiragana[newCard].gana}}</p>
       <span v-if="newCard !== -1" class="solution">{{hiragana[newCard].roman}}</span>
@@ -57,9 +58,6 @@
         <p v-if="highscore == score"><small>New Highscore!</small></p>
         <p v-else><small>Highscore: {{highscore}}</small></p>
       </div>
-
-      <!--<small>How does the scoring work?<br/>Score = Ganas in a row &minus; Errors &times; Penalty<br/>
-      Penalty = 1 / (avg. Time &minus; 1)</small>-->
 
       <div v-if="eligibleNewCard" :class="['button', {'hidden': state !== 'wait'}]" @click="introduceNewCard()">
         <span>Continue</span>

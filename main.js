@@ -2,20 +2,21 @@
 
 % todo: that split second, when the cards arrive/leave, it shows them in red bzw. with the solution.
 % one card problem
-% whole pile positioning
+% whole pile positioning (should be correct now)
+% mobile optimization
 
 */
 
 let app = new Vue({
   el: '#app',
   data: {
-    version: '0.1.214b',     // '0.1.0129',
+    version: '0.1.312',     // start date '0.1.0129',
     answer: '',             // the input thingy
     fullorder: [],          // the full list of gana in the current run
     order: [],              // the list of gana that are left to do
     reserve: [],            // the failed gana that you have redo
     state: 'wait',
-    eligibleNewCard: true, // if you get a new card, in the next run
+    eligibleNewCard: false, // if you get a new card, in the next run
     newCard: -1,
     time: 0,
     timer: undefined,
@@ -171,7 +172,9 @@ let app = new Vue({
     },
     submit () {
       let temp = undefined
-      if (this.answer.trim() === this.hiragana[this.order[0]].roman) {
+      if (this.answer.trim().length == 0) {
+        // ignore
+      } else if (this.answer.trim() === this.hiragana[this.order[0]].roman) {
         // if answer is correct, remove gana from list
         // this.hiragana[this.order[0]].cor++
         this.order.shift()
@@ -200,8 +203,8 @@ let app = new Vue({
         if (this.score > this.highscore) this.highscore = this.score
         if (this.errors == 0) {
           this.eligibleNewCard = true
-          localStorage.setItem("eligibleNewCard", this.eligibleNewCard)
         }
+        localStorage.setItem("eligibleNewCard", this.eligibleNewCard)
         localStorage.setItem("highscore", this.highscore)
         localStorage.setItem("hiragana", JSON.stringify(this.hiragana))
         this.timer = undefined
@@ -209,12 +212,11 @@ let app = new Vue({
         this.order = JSON.parse(JSON.stringify(this.shuffle(this.reserve)))
         this.reserve = []
       }
-
       this.answer = ''
     },
     getCardStyle (c, fullIndex, orderIndex) {
       let deg = 0
-      let top = 72 + (orderIndex * 8)
+      let top = (orderIndex * 8)
       let x = 0
       let y = 0
       let op = 1 - (orderIndex/5)//this.fullorder.length)
@@ -230,13 +232,13 @@ let app = new Vue({
       } else if (this.reserve.includes(c)) {
         // if in reserve
         x = 128 - (c * 256/(this.fullorder.length-1))
-        y = 512 + (fullIndex * 50/this.fullorder.length)
+        y = top + 128 + 256 + (fullIndex * 50/this.fullorder.length)
         deg = x/256*10
         op = 1
         z = this.reserve.length - orderIndex
       }
       return {
-        top: top + 'px',
+        top: 'calc(50% - 192px + '+top+'px)',
         transform: 'rotate('+deg+'deg) translate('+x+'px, '+y+'px)',
         opacity: op,
         zIndex: z
@@ -286,6 +288,8 @@ let app = new Vue({
     }
     if (localStorage.getItem("eligibleNewCard") !== null && localStorage.getItem("eligibleNewCard") !== undefined) {
       this.eligibleNewCard = localStorage.getItem("eligibleNewCard")
+    } else {
+      this.eligibleNewCard = true
     }
     // prepCards
     this.prepCards()
